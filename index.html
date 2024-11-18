@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout Time Calculator</title>
+</head>
+<body>
+    <h2>Logout Time Calculator</h2>
+    <form id="calculatorForm">
+        <label for="startTime">Enter Login Time (HH:MM in 24-hour format):</label><br>
+        <input type="time" id="startTime" required><br><br>
+        
+        <label for="useScheme">Use Scheme (Reduce work time to 7.5 hours):</label>
+        <input type="checkbox" id="useScheme"><br><br>
+        
+        <button type="button" onclick="calculateLogoutTime()">Calculate Logout Time</button>
+    </form>
+    
+    <h3 id="result"></h3>
+
+    <script>
+        function calculateLogoutTime() {
+            // Get user inputs
+            const startTimeInput = document.getElementById('startTime').value;
+            const useScheme = document.getElementById('useScheme').checked;
+            
+            if (!startTimeInput) {
+                document.getElementById('result').innerText = "Please enter a valid login time.";
+                return;
+            }
+
+            // Parse the input time
+            const [hours, minutes] = startTimeInput.split(':').map(Number);
+            let startDate = new Date();
+            startDate.setHours(hours, minutes, 0);
+
+            // Determine work duration based on scheme selection
+            const workDuration = useScheme ? 7.5 : 8.5; // Hours
+
+            // Calculate logout time
+            const logoutDate = new Date(startDate.getTime() + workDuration * 60 * 60 * 1000);
+            const logoutHours = String(logoutDate.getHours()).padStart(2, '0');
+            const logoutMinutes = String(logoutDate.getMinutes()).padStart(2, '0');
+
+            // Display result
+            document.getElementById('result').innerText = `Your logout time is: ${logoutHours}:${logoutMinutes}`;
+        }
+    </script>
+</body>
+</html>
